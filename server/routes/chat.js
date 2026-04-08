@@ -2,6 +2,7 @@ const express = require('express');
 const { Match, Message } = require('../models/Chat');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { getRandomIcebreaker } = require('../utils/icebreakers');
 
 const router = express.Router();
 
@@ -16,6 +17,10 @@ const auth = (req, res, next) => {
     res.status(400).json({ error: 'Invalid token' });
   }
 };
+
+router.get('/icebreaker', auth, (req, res) => {
+  res.json({ icebreaker: getRandomIcebreaker() });
+});
 
 router.get('/:matchId', auth, async (req, res) => {
   try {

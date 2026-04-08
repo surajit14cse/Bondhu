@@ -12,39 +12,49 @@ const Navbar = () => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
 
+  // Don't show navbar on login/signup
+  if (location.pathname === '/login' || location.pathname === '/signup') return null;
+
   return (
     <nav className="glass" style={{ 
       position: 'fixed', 
-      bottom: '20px', 
+      bottom: '30px', 
       left: '50%', 
       transform: 'translateX(-50%)',
-      width: '90%',
+      width: 'calc(100% - 48px)',
       maxWidth: '400px',
-      height: '70px',
-      borderRadius: '35px',
+      height: '72px',
+      borderRadius: '36px',
       display: 'flex',
       justifyContent: 'space-around',
       alignItems: 'center',
-      zIndex: 1000,
-      boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
+      zIndex: 2000,
+      padding: '0 20px',
+      border: '1px solid rgba(255,255,255,0.5)',
+      boxShadow: '0 12px 40px rgba(0,0,0,0.18)'
     }}>
-      <Link to="/"><Search color={isActive('/') ? '#ff512f' : '#666'} size={28} /></Link>
-      <Link to="/matches"><Heart color={isActive('/matches') ? '#ff512f' : '#666'} size={28} /></Link>
-      <Link to="/profile"><UserIcon color={isActive('/profile') ? '#ff512f' : '#666'} size={28} /></Link>
+      <Link to="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', textDecoration: 'none', transition: 'all 0.2s', padding: '8px' }}>
+        <Search color={isActive('/') ? '#FF385C' : '#999'} size={24} strokeWidth={isActive('/') ? 3 : 2} />
+        <span style={{ fontSize: '12px', fontWeight: '800', color: isActive('/') ? '#FF385C' : '#999' }}>Discover</span>
+      </Link>
+      <Link to="/matches" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', textDecoration: 'none', transition: 'all 0.2s', padding: '8px' }}>
+        <Heart color={isActive('/matches') ? '#FF385C' : '#999'} fill={isActive('/matches') ? '#FF385C' : 'none'} size={24} strokeWidth={isActive('/matches') ? 3 : 2} />
+        <span style={{ fontSize: '12px', fontWeight: '800', color: isActive('/matches') ? '#FF385C' : '#999' }}>Matches</span>
+      </Link>
+      <Link to="/profile" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', textDecoration: 'none', transition: 'all 0.2s', padding: '8px' }}>
+        <UserIcon color={isActive('/profile') ? '#FF385C' : '#999'} size={24} strokeWidth={isActive('/profile') ? 3 : 2} />
+        <span style={{ fontSize: '12px', fontWeight: '800', color: isActive('/profile') ? '#FF385C' : '#999' }}>Profile</span>
+      </Link>
     </nav>
   );
 };
 
 function App() {
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
+  const [user, setUser] = useState<any>(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      // In a real app, you'd verify the token with the backend here
-      setUser({ id: 'mock-id' }); // Temporary mock user
-    }
-  }, []);
+    const userId = localStorage.getItem('userId');
+    return token ? { id: userId || 'stored-user' } : null;
+  });
 
   return (
     <Router>

@@ -1,0 +1,158 @@
+You are a senior full-stack engineer.
+
+I am building a Tinder-like dating app called "Bondhu".
+
+Current Stack:
+- Frontend: React 19 + TypeScript + Vite
+- Backend: Node.js + Express
+- Database: MySQL with Sequelize ORM
+- Realtime: Socket.io
+
+Your task:
+Upgrade my existing app by adding advanced Tinder-like features with clean, scalable, production-ready code.
+
+Follow best practices:
+- Modular architecture
+- Clean folder structure
+- Reusable components
+- Secure APIs
+- Optimized queries
+
+-----------------------------------
+FEATURES TO IMPLEMENT
+-----------------------------------
+
+1. Swipe System (Frontend + Backend)
+- Add swipe gestures (left = dislike, right = like, up = super like)
+- Smooth animations using Framer Motion
+- API for recording swipe actions
+- Prevent duplicate swipes
+
+-----------------------------------
+
+2. Location-Based Matching
+- Store user latitude & longitude
+- Use Haversine formula to calculate distance
+- Add API: getNearbyUsers(radius in km)
+- Filter users based on distance
+
+-----------------------------------
+
+3. Smart Matching Algorithm
+- Match score based on:
+  - Interests similarity
+  - Age preference
+  - Activity level
+- Return sorted recommended users
+
+-----------------------------------
+
+4. Advanced Chat System (Socket.io)
+- Typing indicator
+- Seen / Delivered status
+- إرسال images
+- Emoji support
+- Voice message support (optional structure)
+
+-----------------------------------
+
+5. Push Notifications
+- Integrate Firebase Cloud Messaging (FCM)
+- Trigger notifications for:
+  - New match
+  - New message
+  - New like
+
+-----------------------------------
+
+6. Premium Subscription System
+- भूमिका:
+  - Unlimited swipes
+  - See who liked you
+  - Boost profile
+- Payment integration (Stripe or SSLCommerz)
+- Middleware to check premium access
+
+-----------------------------------
+
+7. Boost Feature
+- Allow users to boost profile visibility
+- Increase ranking temporarily
+- Store boost expiry time
+
+-----------------------------------
+
+8. Advanced Filters
+- Age range filter
+- Gender filter
+- Interest filter
+- Distance filter
+
+-----------------------------------
+
+9. Profile Verification System
+- Upload selfie verification
+- Mark user as verified
+- Add badge in frontend
+
+-----------------------------------
+
+10. Report & Block System
+- रिपोर्ट API
+- Block user functionality
+- Prevent blocked users from interacting
+
+-----------------------------------
+
+11. AI-Based Recommendations
+- Suggest "Top Matches"
+- Use scoring logic (no external AI required initially)
+- Keep system extendable for ML later
+
+-----------------------------------
+
+12. Icebreaker Feature
+- Generate conversation starter suggestions
+- Add button in chat UI
+
+-----------------------------------
+
+13. Video Profile Upload
+- Upload short intro video
+- Store video URL
+- Show in profile card
+
+-----------------------------------
+
+14. Gamification
+- Daily swipe limit (for free users)
+- Reward system
+- Streak tracking
+
+-----------------------------------
+
+DELIVERABLES
+-----------------------------------
+
+1. Database schema updates (Sequelize models)
+2. Backend APIs (Express controllers + routes)
+3. Frontend UI components (React)
+4. Socket.io event structure
+5. Folder structure improvements
+6. Middleware (auth, premium, validation)
+7. Example API requests/responses
+8. Security improvements (JWT, validation, rate limit)
+
+-----------------------------------
+
+IMPORTANT
+-----------------------------------
+
+- Do not break existing features
+- Keep backward compatibility
+- Write clean, commented code
+- Use environment variables properly
+- Optimize performance
+
+Start step-by-step:
+First implement Swipe System, then wait for my confirmation before continuing.
