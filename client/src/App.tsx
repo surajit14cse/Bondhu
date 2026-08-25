@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { Heart, MessageCircle, User as UserIcon, Search } from 'lucide-react';
+import { useState } from 'react';
+import { Heart, User as UserIcon, Search } from 'lucide-react';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Discover from './pages/Discover';

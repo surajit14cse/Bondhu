@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Send, ChevronLeft, MoreHorizontal, Check, CheckCheck, Camera, Mic, Image as ImageIcon, Video } from 'lucide-react';
+import { Send, ChevronLeft, MoreHorizontal, Check, CheckCheck, Mic, Image as ImageIcon, Video } from 'lucide-react';
 import io from 'socket.io-client';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';

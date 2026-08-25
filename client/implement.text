@@ -1,0 +1,31 @@
+
+> server@1.0.0 start
+> node index.js
+
+◇ injecting env (7) from .env // tip: ⌘ suppress logs { quiet: true }
+◇ injecting env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+❌ Database Sync Error: ConnectionRefusedError [SequelizeConnectionRefusedError]
+    at ConnectionManager.connect (C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\dialects\mysql\connection-manager.js:92:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async ConnectionManager._connect (C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\dialects\abstract\connection-manager.js:222:24)    at async C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\dialects\abstract\connection-manager.js:174:32
+    at async ConnectionManager.getConnection (C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\dialects\abstract\connection-manager.js:197:7)
+    at async C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\sequelize.js:305:26
+    at async MySQLQueryInterface.tableExists (C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\dialects\abstract\query-interface.js:102:17)
+    at async User.sync (C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\model.js:939:21)
+    at async Sequelize.sync (C:\Users\Big-Boss\Documents\Bondhu\server\node_modules\sequelize\lib\sequelize.js:377:9) {
+  parent: AggregateError [ECONNREFUSED]: 
+      at internalConnectMultiple (node:net:1193:18)
+      at afterConnectMultiple (node:net:1783:7) {
+    code: 'ECONNREFUSED',
+    fatal: true,
+    [errors]: [ [Error], [Error] ]
+  },
+  original: AggregateError [ECONNREFUSED]: 
+      at internalConnectMultiple (node:net:1193:18)
+      at afterConnectMultiple (node:net:1783:7) {
+    code: 'ECONNREFUSED',
+    fatal: true,
+    [errors]: [ [Error], [Error] ]
+  }
+}
+Ensure MySQL is running and you have created the database: bondhu_db

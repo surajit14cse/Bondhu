@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-import { Heart, X, Info, Sliders, MapPin, Star, User } from 'lucide-react';
+import { Heart, X, Info, Sliders, MapPin, Star } from 'lucide-react';
 import axios from 'axios';
 import MatchOverlay from '../components/MatchOverlay';
 
@@ -275,7 +275,7 @@ const Discover = () => {
           ) : (
             <AnimatePresence mode="popLayout">
               {users.length > 0 ? (
-                users.map((user, i) => (
+                users.map((user) => (
                   <SwipeCard 
                     key={user.id} 
                     user={user} 
@@ -300,30 +300,37 @@ const Discover = () => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', padding: '24px 0 110px', background: 'white' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '14px', padding: '16px 0 110px', background: 'white', position: 'relative', zIndex: 10 }}>
         <button 
           className="glass" 
-          style={{ width: '56px', height: '56px', borderRadius: '50%', color: '#f87171' }} 
+          style={{ width: '54px', height: '54px', borderRadius: '50%', color: '#FF385C', background: '#FFF0F3', border: '1px solid #FFE0E6', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }} 
           onClick={() => users.length > 0 && handleSwipe('left', users[users.length-1].id)}
+          title="Pass"
         >
-          <X size={28} strokeWidth={3} />
+          <X size={26} strokeWidth={3} color="#FF385C" />
         </button>
         <button 
           className="glass" 
-          style={{ width: '52px', height: '52px', borderRadius: '50%', color: '#3b82f6' }} 
+          style={{ width: '48px', height: '48px', borderRadius: '50%', color: '#3b82f6', background: '#EFF6FF', border: '1px solid #DBEAFE', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }} 
           onClick={() => users.length > 0 && handleSwipe('up', users[users.length-1].id)}
+          title="Super Like"
         >
-          <Star size={24} fill="currentColor" />
+          <Star size={22} fill="#3b82f6" color="#3b82f6" />
         </button>
         <button 
           className="btn-primary" 
-          style={{ width: '76px', height: '72px', borderRadius: '50%', padding: 0 }} 
+          style={{ width: '68px', height: '68px', borderRadius: '50%', padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 25px rgba(255, 56, 92, 0.4)' }} 
           onClick={() => users.length > 0 && handleSwipe('right', users[users.length-1].id)}
+          title="Like"
         >
-          <Heart size={32} fill="white" />
+          <Heart size={30} fill="white" color="white" />
         </button>
-        <button className="glass" style={{ width: '56px', height: '56px', borderRadius: '50%', color: '#00A699' }}>
-          <Info size={28} strokeWidth={3} />
+        <button 
+          className="glass" 
+          style={{ width: '54px', height: '54px', borderRadius: '50%', color: '#00A699', background: '#E6F7F5', border: '1px solid #B2ECE6', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}
+          title="Info"
+        >
+          <Info size={26} strokeWidth={3} color="#00A699" />
         </button>
       </div>
 

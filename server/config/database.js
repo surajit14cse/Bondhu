@@ -1,15 +1,24 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config();
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME || 'bondhu_db',
-  process.env.DB_USER || 'root',
-  process.env.DB_PASS || '',
-  {
-    host: process.env.DB_HOST || 'localhost',
-    dialect: 'mysql',
-    logging: false,
-  }
-);
+const dialect = process.env.DB_DIALECT || 'sqlite';
+
+const sequelize = dialect === 'sqlite'
+  ? new Sequelize({
+      dialect: 'sqlite',
+      storage: process.env.DB_STORAGE || './database.sqlite',
+      logging: false,
+    })
+  : new Sequelize(
+      process.env.DB_NAME || 'bondhu',
+      process.env.DB_USER || 'root',
+      process.env.DB_PASS || '',
+      {
+        host: process.env.DB_HOST || 'localhost',
+        port: process.env.DB_PORT || 3306,
+        dialect: 'mysql',
+        logging: false,
+      }
+    );
 
 module.exports = sequelize;
