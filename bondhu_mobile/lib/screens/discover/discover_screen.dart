@@ -13,6 +13,8 @@ class DiscoverScreen extends StatefulWidget {
 
 class _DiscoverScreenState extends State<DiscoverScreen> {
   final CardSwiperController _controller = CardSwiperController();
+  String _selectedGender = 'all';
+  double _distance = 50;
 
   @override
   void initState() {
@@ -54,29 +56,161 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: const Text('🎉 It\'s a Match! 🎉', textAlign: TextAlign.center),
-        content: Text(
-          'You and $matchedUserName liked each other.',
-          textAlign: TextAlign.center,
+        title: const Text('🎉 It\'s a Match! 🎉', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircleAvatar(
+              radius: 40,
+              backgroundColor: Color(0xFFFFF0F3),
+              child: Icon(Icons.favorite_rounded, color: Color(0xFFFF385C), size: 40),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'You and $matchedUserName liked each other.',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
+          ],
         ),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Keep Swiping'),
+            child: const Text('Keep Swiping', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFFF385C),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
             onPressed: () {
               Navigator.pop(ctx);
-              // Navigate to matches/chat tab
             },
-            child: const Text('Say Hi', style: TextStyle(color: Colors.white)),
+            child: const Text('Send a Message', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
+    );
+  }
+
+  void _openFiltersModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(24, 20, 24, 36),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 44,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Discovery Filters',
+                        style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(ctx),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('Interested in', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: ['all', 'male', 'female'].map((g) {
+                      final isSelected = _selectedGender == g;
+                      return Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: ChoiceChip(
+                            label: Center(
+                              child: Text(
+                                g == 'all' ? 'All' : g[0].toUpperCase() + g.substring(1),
+                                style: TextStyle(
+                                  color: isSelected ? Colors.white : Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            selected: isSelected,
+                            selectedColor: const Color(0xFFFF385C),
+                            onSelected: (val) {
+                              if (val) {
+                                setModalState(() => _selectedGender = g);
+                                setState(() => _selectedGender = g);
+                              }
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Maximum Distance', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                      Text('${_distance.round()} miles', style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFFFF385C))),
+                    ],
+                  ),
+                  Slider(
+                    value: _distance,
+                    min: 5,
+                    max: 100,
+                    divisions: 19,
+                    activeColor: const Color(0xFFFF385C),
+                    onChanged: (val) {
+                      setModalState(() => _distance = val);
+                      setState(() => _distance = val);
+                    },
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF385C),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        Provider.of<DiscoveryProvider>(context, listen: false).fetchDiscovery(
+                          gender: _selectedGender,
+                          distance: _distance.round(),
+                        );
+                      },
+                      child: const Text('Apply Filters', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -100,9 +234,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.tune_rounded, color: Colors.black87),
-            onPressed: () {
-              // Open discovery filters
-            },
+            onPressed: _openFiltersModal,
           ),
         ],
       ),
@@ -129,7 +261,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   const Text('Expand your search radius or change filters.', style: TextStyle(color: Colors.grey)),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () => provider.fetchDiscovery(),
+                    onPressed: () => provider.fetchDiscovery(gender: _selectedGender, distance: _distance.round()),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFF385C),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

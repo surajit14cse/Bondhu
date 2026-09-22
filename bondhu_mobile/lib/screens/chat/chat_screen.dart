@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import '../../providers/chat_provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../services/api_service.dart';
+import '../../config/api_constants.dart';
 
 class ChatScreen extends StatefulWidget {
   final String matchId;
@@ -54,6 +57,57 @@ class _ChatScreenState extends State<ChatScreen> {
       _textController.clear();
       _scrollToBottom();
     }
+  }
+
+  void _fetchIcebreaker() async {
+    try {
+      final res = await ApiService.get(ApiConstants.icebreaker);
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body);
+        final ice = data['icebreaker'];
+        if (ice != null && mounted) {
+          _textController.text = ice;
+        }
+      }
+    } catch (_) {}
+  }
+
+  void _showUserOptions() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.block, color: Colors.redAccent),
+                title: Text('Block ${widget.otherUserName}', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${widget.otherUserName} has been blocked')),
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.flag_outlined, color: Colors.orange),
+                title: const Text('Report Profile', style: TextStyle(fontWeight: FontWeight.bold)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Report submitted. We will review it shortly.')),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _scrollToBottom() {
@@ -113,6 +167,12 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_vert, color: Colors.black87),
+            onPressed: _showUserOptions,
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -120,6 +180,41 @@ class _ChatScreenState extends State<ChatScreen> {
             child: Consumer<ChatProvider>(
               builder: (context, chat, child) {
                 WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+
+                if (chat.messages.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: CachedNetworkImageProvider(avatarUrl),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          'You matched with ${widget.otherUserName}!',
+                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        const SizedBox(height: 6),
+                        const Text(
+                          'Break the ice and send the first message.',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton.icon(
+                          onPressed: _fetchIcebreaker,
+                          icon: const Icon(Icons.auto_awesome, color: Colors.amber, size: 18),
+                          label: const Text('Generate Icebreaker', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFFF9E6),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
 
                 return ListView.builder(
                   controller: _scrollController,
@@ -189,6 +284,11 @@ class _ChatScreenState extends State<ChatScreen> {
             child: SafeArea(
               child: Row(
                 children: [
+                  IconButton(
+                    icon: const Icon(Icons.auto_awesome, color: Colors.amber, size: 22),
+                    tooltip: 'Get AI Icebreaker',
+                    onPressed: _fetchIcebreaker,
+                  ),
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16),

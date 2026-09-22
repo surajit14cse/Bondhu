@@ -9,10 +9,16 @@ router.post('/signup', async (req, res) => {
   console.log('Signup Request Body:', req.body);
   try {
     console.log(`Attempting signup for: ${email || phone}`);
-    const user = await User.create({ name, email, phone, password });
+    const userData = {
+      name,
+      password,
+      email: email && email.trim() !== '' ? email.trim() : null,
+      phone: phone && phone.trim() !== '' ? phone.trim() : null,
+    };
+    const user = await User.create(userData);
     console.log(`User created successfully: ${user.id}`);
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || 'secret_key', { expiresIn: '1d' });
-    res.status(201).json({ token, user: { id: user.id, name, email, phone } });
+    res.status(201).json({ token, user: { id: user.id, name, email: user.email, phone: user.phone } });
   } catch (err) {
     console.error('Signup Error:', err);
     if (err.name === 'SequelizeUniqueConstraintError') {
