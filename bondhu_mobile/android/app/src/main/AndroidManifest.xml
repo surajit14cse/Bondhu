@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bondhu_mobile">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Permissions for Networking, Location, and Camera/Photos -->
     <uses-permission android:name="android.permission.INTERNET"/>
