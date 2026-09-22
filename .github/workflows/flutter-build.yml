@@ -35,7 +35,10 @@ jobs:
         working-directory: bondhu_mobile
         run: |
           # Generate android wrapper & gradle files if missing
-          flutter create --platforms=android .
+          flutter create --platforms=android --org com.bondhu .
+          # Ensure compileSdk and targetSdk are 35 for modern Android plugins
+          sed -i 's/compileSdk = flutter.compileSdkVersion/compileSdk = 35/g' android/app/build.gradle || true
+          sed -i 's/compileSdkVersion flutter.compileSdkVersion/compileSdkVersion 35/g' android/app/build.gradle || true
 
       - name: Install dependencies
         working-directory: bondhu_mobile

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../models/user_model.dart';
+import '../../../models/user_model.dart';
 
 class SwipeCard extends StatelessWidget {
   final UserModel user;
