@@ -1,20 +1,15 @@
 import 'dart:io';
 
 class ApiConstants {
-  // Use 10.0.2.2 when running on Android Emulator to reach PC localhost.
-  // Use PC local LAN IP (e.g. 192.168.1.X) when running on physical device.
+  // PC IP for physical phone on the same hotspot/Wi-Fi network
+  static const String serverHost = '192.168.137.1:5000';
+
   static String get baseUrl {
-    if (Platform.isAndroid) {
-      return 'http://10.0.2.2:5000/api';
-    }
-    return 'http://localhost:5000/api';
+    return 'http://$serverHost/api';
   }
 
   static String get socketUrl {
-    if (Platform.isAndroid) {
-      return 'http://10.0.2.2:5000';
-    }
-    return 'http://localhost:5000';
+    return 'http://$serverHost';
   }
 
   // Endpoints
